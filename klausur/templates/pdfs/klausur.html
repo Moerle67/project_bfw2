@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//DE" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% if pdf_title %}{{ pdf_title }}{% else %}PDF{% endif %}</title>
+        <style type="text/css">
+            body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+                /* text-align: right;*/
+                padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+                @page {
+                size: a4 portrait;
+                @frame header_frame {           /* Static Frame */
+                    -pdf-frame-content: header_content;
+                    left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+                }
+                @frame content_frame {          /* Content Frame */
+                    left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+                }
+                @frame footer_frame {           /* Another static Frame */
+                    -pdf-frame-content: footer_content;
+                    left: 50pt; width: 512pt; top: 792pt; height: 20pt;
+                }
+            }
+         </style>
+    </head>
+    <body>
+        <div id="header_content">Name: ________________________________ -- {{thema}} </div>
+
+        <!-- Content for Static Frame 'footer_frame' -->
+        <div id="footer_content">(c) - page <pdf:pagenumber>
+            of <pdf:pagecount>
+        </div>
+
+        <div class='wrapper'>
+            <div class='header'>
+                <p class='title'>{{thema}}</p>
+            </div>
+        <div>
+            <div id="footer_content"> Seite <pdf:pagenumber>
+                von <pdf:pagecount> </div>
+        {% for frage in fragen %}
+        {{frage}}
+        <div>
+            <div style="width: 80%;">{{forloop.counter}}. {{frage.titel}} </div>
+            <p>{{frage.frage|safe}}</p>
+            <div style="width: 20%;" align="right">_____/ {{frage.punkte}}</div>
+            <br />
+            <br />
+        </div>
+            <!--<pdf:nextpage />-->
+        {% endfor%}
+    </div>
+    </body>
+</html>

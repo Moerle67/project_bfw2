@@ -1,0 +1,12 @@
+{% extends "start.html" %}
+
+{% block title %}Auswertung {{klausur}}{% endblock title %}
+
+{% block content %}
+    <h1>Auswertung {{klausur}}</h1>
+    {% for tn in  teilnehmer %}
+    <div class="d-grid gap-2 col-6 justify-center">
+        <a href="{% url 'evaluation2' klausur.id tn.0.id%}"><button type="button" class="btn btn-light text-start">{{tn.0}} ({{tn.1}}/{{klausur.get_gesamtpunkte}}) - {{tn.2}}%</button></a>
+    </div>
+    {% endfor %}
+{% endblock content %}

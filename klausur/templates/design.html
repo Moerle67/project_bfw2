@@ -1,0 +1,37 @@
+{% extends "start.html" %}
+
+{% block title %}Design Klausuren{% endblock title %}
+
+{% block content %}
+    <h1 >{{klausur}}</h1>
+    <form action="{% url 'newside' klausur=klausur.id %}" method="post">
+        {% csrf_token %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Frage</th>
+                    <th scope="col">Neue Seite</th>
+                </tr>
+            </thead>
+            <tboby>
+            {% for frage in fragen %}
+                <tr>
+                    <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 1 %}">+</a></td>
+                    <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 2 %}">-</a></td>
+                    <td title="{{frage.0.frage.frage}}">{{forloop.counter}}. ({{frage.0.position}}) {{frage.0}} {{frage.1}}</td>
+                    {% comment %} <td><input class="px-auto form-check-input" type="checkbox" value="{{frage.id}}" id="checkbox{{frage.id}}" onchange="this.form.submit()" name="nl"></td> {% endcomment %}
+                    <td><button type="submit" class="btn {% if frage.0.seitenwechsel %}btn-success{% else %}btn-light{% endif %} btn-sm" value="{{frage.0.id}}" name="nl" title="Nach der Frage einen Seitenwechsel einfügen">Neue Seite</button></td>
+                </tr>
+            {% endfor %}
+            </tboby>
+        </table>
+        <div class="row">
+            <div class="col-3"><a href="{% url 'gen_pdf' klausur.id 3 %}" target="_empty"><button type="button" name="nl" value="gen" class="btn btn-outline-success">Klausur generieren</button></a></div>
+            <div class="col-3"><a href="{% url 'gen_pdf' klausur.id 4 %}" target="_empty"><button type="button" class="btn btn-outline-success">Muster generieren</button></a></div>
+            <div class="col-3"><a href="{% url 'zufall' klausur.id %}"><button type="button" class="btn btn-outline-success">Zufällig anordnen</button></a></div>
+            <div class="col-3"><a href="{% url 'evaluation' klausur.id %}" target="_empty"><button type="button" class="btn btn-outline-success">Auswertung</button></a></div>
+        </div>  
+    </form>
+{% endblock content %}
